@@ -1,38 +1,285 @@
-.App {
-  text-align: center;
+
+.App{
+}
+textarea:focus, input:focus{
+    outline: none;
+}
+.MainCard{
+    margin: 20px;
+    padding: 5px;
+    padding-bottom: 10px;
+    background-color: rgb(255, 255, 255);
+    max-width: 350px;
+    border-radius: 10px;
+    border: 1px solid rgba(91, 89, 89, 0.822);
+}
+.MainButton{
+    background-color: rgb(69, 180, 13);
+    color: white;
+    padding: 10px;
+    border: 0px solid black;
+    border-radius: 4px;
+    
+}
+.MainHeader{
+    height: 100px;
+}
+.orderPage{
+    padding: 0%;
+    background-color: white;
+}
+.orderForm{
+    margin:3px
+}
+.orderForm textarea{
+    color: rgb(63, 60, 60);
+    text-transform: capitalize;
+    margin: 7px;
+    border-radius: 3px;
+    border: 1px solid rgb(87, 85, 85);
+    padding: 5px;
+    font-size: 15px;
+    min-width: 300px;
+    min-height: 100px;
+}
+.orderForm input{
+    color: rgb(63, 60, 60);
+    text-transform: capitalize;
+    font-size: 15px;
+    margin: 7px;
+    border-radius: 3px;
+    border: 1px solid rgb(87, 85, 85);
+    padding: 5px;
+}
+.orderList{
+    width: 100%;
+    margin: 3px;
+    border: 1px solid gray;
+    font-size: 20px;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.orderList input[type=text]{
+    height: 100%;
+    font-size: 20px;
+    color: rgb(63, 60, 60);
+    width: 100%;
+    padding: 5px;
+    border: 0px solid red;
+}
+.orderList input[type=button]{
+   border: 0px solid red;
+   background-color: rgb(37, 160, 37);
+   color: white;
+   width: 30px;
+   height: 30px;
+   border-radius: 30px;
+   font-size: 20px;
+}
+.bannerOrder{
+    margin: 0px;
+    padding: 0px;
+    height: 120px;
+    margin-bottom: 30px;
+    background-color: rgb(63, 193, 44);
+}
+.ReactCrop__image{
+    max-height: 70vh !important;
+}
+.dRvjhg{
+    color: white !important;
+    background-color: rgb(19, 133, 1) !important;
+}
+.loder{
+    display: none;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    background-color: white;
+    text-align: center;
+    padding-top: 60%;
+}
+.bannerOrder small{
+    position: absolute;
+    top: 29px;
+    font-size: 20px;
+    font-weight: 700;
+    text-indent: 10px;
+    color: white;
+}
+.bannerOrder p{
+    position: absolute;
+    top: 40px;
+    width: 300px;
+    font-size: 16px;
+    font-weight: 300;
+    padding: 5px;
+    margin-left: 10px;
+    color: rgba(255, 255, 255, 0.76);
+}
+.orderNow{
+    background-color: white;
+    /* border-radius: 5px 5px ; */
+    padding: 8px;
+    position: fixed;
+    bottom: 0px;
+    left: 0px;
+    width: 100vw;
+    margin: 0px;
+    align-items: center;
+    box-shadow: 0px 0px 5px 2px gray;
+}
+.orderNow input{
+    font-weight: 600;
+    font-size: 20px;
+    color: white;
+    padding: 7px;
+    border-radius: 7px;
+    width: 80%;
+    border: 0px solid red;
+    background-color: rgb(19, 184, 19);
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
+.OrderCard{
+    border: 1px solid gray;
+    /* box-shadow: 0px 0px 5px 2px gray; */
+    margin: 10px;
+    border-radius: 5px;
+}
+/* .OrderCard tr,td{
+    border-collapse: collapse;
+    border: 1px solid black;
+} */
+.bottomSheetOrder{
+    background-color: white;
+    width: 100vw;
+    border-radius: 10px 10px 0px 0px;
+    display: none;
+    position: fixed;
+    bottom: 0px;
+    left: 0px;
+    padding: 10px;
+    margin: 0px;
+}
+.bottomSheetOrder table,td,tr{
+
+    /* border-collapse: collapse;
+    border: 1px solid black; */
+}
+.bottomSheetBg{
+    padding: 0px;
+    display: none;
+    width: 100vw;
+    height: 100vh;
+    margin: 0pc;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    background-color: rgba(70, 70, 70, 0.637);
+}
+.contactus{
+    margin-top: 60px;
+    border: 1px solid gray;
+    /* box-shadow: 0px 0px 5px 2px gray; */
+    margin: 10px;
+    border-radius: 5px;
+}
+#addsbg{
+    background-color: rgba(52, 52, 52, 0.866);
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    width: 100vw;
+    height: 100vh;
+}
+.AddressForm{
+    position: fixed;
+    bottom: 0px;
+    left: 0px;
+    width: 100%;
+    background-color: white;
+}
+/* .orderForm{
+    margin:3px
+}
+.orderForm textarea{
+    color: rgb(63, 60, 60);
+
+    margin: 7px;
+    border-radius: 3px;
+    border: 1px solid rgb(87, 85, 85);
+    padding: 5px;
+    font-size: 15px;
+    min-width: 300px;
+    min-height: 100px;
+}
+.orderFormads input{
+    color: rgb(63, 60, 60);
+
+    font-size: 15px;
+    margin: 7px;
+    border-radius: 3px;
+    border: 1px solid rgb(87, 85, 85);
+    padding: 5px;
+} */
+
+.orderafterads{
+    font-weight: 600;
+    font-size: 20px;
+    color: white !important;
+    padding: 7px !important;
+    border-radius: 7px;
+    width: 80%;
+    border: 0px solid red !important;
+    background-color: rgb(19, 184, 19);
+
+}
+
+.nearby{
+    width: 100%;
+    overflow-x: scroll;
+    padding: 0px;
+    color: black;
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+    /* box-shadow: inset 10px 0px 5px 10px; */
+}
+.nearby::-webkit-scrollbar {
+    display: none;
   }
+.nearbycard{
+    padding: 0px;
+    margin: 0px;
+    border: 1px solid rgba(78, 78, 78, 0.79);
+    border-radius: 10px;
+    overflow: hidden;
 }
+.nearbycard a{
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
 }
+.nearbycard p{
+    margin: 0px;
+    margin-left: 10px;
+    text-transform: capitalize;
+    position: static;
+    bottom: 10px;
+    left: 10px;
+    color: black;
 
-.App-link {
-  color: #61dafb;
 }
+.nearbycard small{
+    margin: 3px;
+    margin-left: 10px;
+    text-transform: capitalize;
+    position: static;
+    bottom: 10px;
+    left: 10px;
+    color: black;
+}
+.sqcard{
+    border: 0px solid red;
+    /* border-radius: 10px; */
+    overflow: hidden;
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
 }
