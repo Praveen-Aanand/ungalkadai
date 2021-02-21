@@ -1,9 +1,11 @@
 import { Component, useState, useEffect } from "react"
+import React from 'react'
 import '../App.css'
 import firebase from "firebase";
 import MultiImageInput from 'react-multiple-image-input';
 import { Link, Redirect } from "react-router-dom";
 import BackArrow from '../img/arrow-left-solid.svg'
+import Login from '../pages/login';
 // import { firebaseConfig } from "../components/firebase";
 export default class OrderPage extends Component {
     constructor(props) {
@@ -11,6 +13,7 @@ export default class OrderPage extends Component {
         this.state = {
             showAdds: false,
             address: null,
+            currentUser: null,
             orderFinish: false,
             userpin: "",
             useraddress: "",
@@ -18,7 +21,8 @@ export default class OrderPage extends Component {
             list: [{ name: '', quant: 1 }],
             shopname: "" || this.props.match.params.shop != "n" ? this.props.match.params.shop : "",
             shopaddress: "" || this.props.match.params.address != "n" ? this.props.match.params.address : "",
-            addPic: false
+            addPic: false,
+            showLogin: false
         }
         this.onDrop = this.onDrop.bind(this);
     }
@@ -263,11 +267,18 @@ export default class OrderPage extends Component {
                     </table>
 
                     {this.state.addPic ? <ImagePicker handler={this.onDrop.bind(this)} /> : null}
+                    <br /><br /><br />
                     {/* order now */}
                 </div>
                 {this.state.list.length > 1 || this.state.pictures['0'] != undefined ? <div className="orderNow" align="center">
 
-                    <input type="button" value="Order Now" onClick={() => this.setState({ showAdds: true })} />
+                    <input type="button" value="Order Now" onClick={() => {
+                        if (this.state.currentUser?.uid !== undefined) {
+                            this.setState({ showAdds: true })
+                        } else {
+                            this.setState({showLogin:true})
+                        }
+                    }} />
                 </div> : null}
                 <div className="loder"> loading...</div>
                 { this.state.showAdds ? <div>
@@ -285,7 +296,10 @@ export default class OrderPage extends Component {
                         </form>
                     </div>
                 </div> : null}
-
+                {this.state.showLogin ? <div style={{ position: 'fixed', left: '0px', bottom: '0px', }} align="center">
+          <div style={{ position: 'fixed', left: '0px', top: '0px',width:'100%',height:'100%', padding: '0px',backgroundColor:'rgba(107, 108, 107, 0.39)' }} onClick={()=>this.setState({showLogin:false})} ></div>
+          <Login/>
+        </div> : null}
             </div>);
         }
     }

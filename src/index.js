@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import Login from './pages/login';
+// import Login from './pages/login';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter,Switch,Redirect,Route } from "react-router-dom";
@@ -13,7 +13,7 @@ ReactDOM.render(
       {/* <IndexRoute component = {App} /> */}
       <Switch>
       <Route exact path="/" component={App} />
-        <Route path="/login" component={Login} />
+        {/* <Route path="/login" component={Login} /> */}
         <Route exact path="/order/:shop/:address/:cato" component={OrderPage} />
         <Route exact path="/order/:shop/:address/:cato/:list" component={OrderPage} />
         <Route path="/order" component={OrderPage} />

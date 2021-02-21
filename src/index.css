@@ -1,13 +1,19 @@
 
+@font-face {
+  font-family: 'openSans';
+  src: local('openSans'), url(./fonts/openSans.woff2) format('woff2');
+}
+
 body {
   user-select: none;
   margin: 0;
   padding: 0%;
   /* background-color: rgb(64, 165, 64); */
-  font-family: 'Roboto',
-    sans-serif;
+  font-family: openSans,sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overscroll-behavior-y: contain;
+
 }
 
 code {

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React from 'react'
 import '../App.css'
 import { Link } from "react-router-dom";
 
@@ -36,7 +36,7 @@ export default function NearBy() {
                           <td key={index}>
                             <Link to={`/order/${item.sname}/${item.saddress}/${item.cato}`}  style={{ textDecoration: 'none' }}>
                             <div  className="nearbycard">
-                             <img height="100" src={item.img}></img>
+                             {/* <img height="100" src={item.img}></img> */}
                              <p>{item.sname}</p>
                              <small>{item.saddress}</small>
                              </div>

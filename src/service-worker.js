@@ -11,7 +11,12 @@ import { clientsClaim } from 'workbox-core';
 import { ExpirationPlugin } from 'workbox-expiration';
 import { precacheAndRoute, createHandlerBoundToURL } from 'workbox-precaching';
 import { registerRoute } from 'workbox-routing';
-import { StaleWhileRevalidate } from 'workbox-strategies';
+import {
+  NetworkFirst,
+  StaleWhileRevalidate,
+  CacheFirst,
+} from 'workbox-strategies';
+import { CacheableResponsePlugin } from 'workbox-cacheable-response';
 
 clientsClaim();
 
@@ -48,19 +53,57 @@ registerRoute(
 
 // An example runtime caching route for requests that aren't handled by the
 // precache, in this case same-origin .png requests like those from in public/
+// registerRoute(
+//   // Add in any other file extensions or routing criteria as needed.
+//   ({ url }) => url.origin === self.location.origin && url.pathname.endsWith('.jpeg'), // Customize this strategy as needed, e.g., by changing to CacheFirst.
+//   new StaleWhileRevalidate({
+//     cacheName: 'images',
+//     // plugins: [
+//     //   // Ensure that once this runtime cache reaches a maximum size the
+//     //   // least-recently used images are removed.
+//     //   new ExpirationPlugin({ maxEntries: 50 }),
+//     // ],
+//   })
+// );
 registerRoute(
-  // Add in any other file extensions or routing criteria as needed.
-  ({ url }) => url.origin === self.location.origin && url.pathname.endsWith('.png'), // Customize this strategy as needed, e.g., by changing to CacheFirst.
+  // Check to see if the request's destination is style for stylesheets, script for JavaScript, or worker for web worker
+  ({ request }) =>
+    request.destination === 'style' ||
+    request.destination === 'script' ||
+    request.destination === 'worker',
+  // Use a Stale While Revalidate caching strategy
   new StaleWhileRevalidate({
-    cacheName: 'images',
+    // Put all cached files in a cache named 'assets'
+    cacheName: 'assets',
     plugins: [
-      // Ensure that once this runtime cache reaches a maximum size the
-      // least-recently used images are removed.
-      new ExpirationPlugin({ maxEntries: 50 }),
+      // Ensure that only requests that result in a 200 status are cached
+      new CacheableResponsePlugin({
+        statuses: [200],
+      }),
     ],
-  })
+  }),
 );
 
+registerRoute(
+  // Check to see if the request's destination is style for an image
+  ({ request }) => request.destination === 'image',
+  // Use a Cache First caching strategy
+  new CacheFirst({
+    // Put all cached files in a cache named 'images'
+    cacheName: 'images',
+    plugins: [
+      // Ensure that only requests that result in a 200 status are cached
+      new CacheableResponsePlugin({
+        statuses: [200],
+      }),
+      // Don't cache more than 50 items, and expire them after 30 days
+      new ExpirationPlugin({
+        maxEntries: 50,
+        maxAgeSeconds: 60 * 60 * 24 * 30, // 30 Days
+      }),
+    ],
+  }),
+);
 // This allows the web app to trigger skipWaiting via
 // registration.waiting.postMessage({type: 'SKIP_WAITING'})
 self.addEventListener('message', (event) => {

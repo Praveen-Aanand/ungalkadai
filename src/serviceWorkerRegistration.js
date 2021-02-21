@@ -53,16 +53,18 @@ export function register(config) {
 }
 
 function registerValidSW(swUrl, config) {
-  navigator.serviceWorker.getRegistration('https://ungakadai.web.app/')
-  .then(swReg => {
-    if (swReg) {
-      navigator.serviceWorker.addEventListener('controllerchange', () => {
-        window.swUpdateReady = true;
-      });
-    }
-  });
+  // navigator.serviceWorker.getRegistration('https://ungakadai.web.app/')
+  // .then(swReg => {
+  //   if (swReg) {
+  //     navigator.serviceWorker.addEventListener('controllerchange', () => {
+  //       window.swUpdateReady = true;
+  //     });
+  //   }
+  // });
   navigator.serviceWorker
-    .register(swUrl)
+    .register(swUrl,{
+      scope: '/app/'
+     })
     .then((registration) => {
       registration.onupdatefound = () => {
         const installingWorker = registration.installing;
