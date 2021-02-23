@@ -63,7 +63,7 @@ function registerValidSW(swUrl, config) {
   // });
   navigator.serviceWorker
     .register(swUrl,{
-      scope: '/app/'
+      scope: '.'
      })
     .then((registration) => {
       registration.onupdatefound = () => {

@@ -1,4 +1,4 @@
-import React,{ useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import '../App.css'
 import firebase from "firebase";
 import Typewriter from 'typewriter-effect';
@@ -7,8 +7,10 @@ export default function MyOrders(props) {
     if (props.uid != undefined) {
         return (
             <div>
-                <div style={{ backgroundColor: 'rgb(138, 239, 138)', color: 'black', width: '100%' }}>
-                    <p>hello</p>
+                <div style={{ backgroundColor: 'rgb(138, 239, 138)', color: 'black', padding: '10px' }}>
+                    <p>Place a Order Now.</p>
+                    <input type="button" value="Order Now" style={{ padding: '20px', paddingTop: '10px', paddingBottom: '10px', backgroundColor: "white", border: '1px solid black' }}
+                        onClick={() => props.tonggleLogin()}  ></input>
                 </div>
                 <MyOrderList uid={props} />
             </div>
@@ -17,8 +19,8 @@ export default function MyOrders(props) {
 
         return (
 
-            <div align="left" style={{position:'relative',backgroundColor: '#88DDAA', color: 'black', height:'130px', padding: '10px',textAlign:'right' ,zIndex:-10}}>
-                <img src={LoginPic} style={{width:'150px', position:'absolute',top:'0px',left:'0px',zIndex:-5}}></img>
+            <div align="left" style={{ position: 'relative', backgroundColor: '#88DDAA', color: 'black', height: '130px', padding: '10px', textAlign: 'right', zIndex: -10 }}>
+                <img src={LoginPic} style={{ width: '150px', position: 'absolute', top: '0px', left: '0px', zIndex: -5 }}></img>
                 <Typewriter
                     options={
                         {
@@ -40,13 +42,15 @@ export default function MyOrders(props) {
                             .start();
                     }}
                 />
-                <input type="button" value="Login" style={{position:'absolute',bottom:'20px',right:'40px',padding:'20px',paddingTop:'10px',paddingBottom:'10px',backgroundColor:"white",border:'1px solid black'}} ></input>
+                <input type="button" value="Login" style={{ position: 'absolute', bottom: '20px', right: '40px', padding: '20px', paddingTop: '10px', paddingBottom: '10px', backgroundColor: "white", border: '1px solid black' }}
+                    onClick={() => props.tonggleLogin()} ></input>
             </div>
         )
 
     }
 }
 function MyOrderList(props) {
+    console.log(props.uid.uid)
     const [orders, setOrders] = useState('load');
     const togglePopup = (data, index) => {
         document.getElementById('or' + index).style.display = data;
@@ -55,7 +59,7 @@ function MyOrderList(props) {
     useEffect(() => {
         //console.log(props.uid)
         const db = firebase.firestore();
-        return db.collection('order').where("uid", "==", props.uid).orderBy('time', 'desc').limit(15).onSnapshot((snapshot) => {
+        return db.collection('order').where("uid", "==", props.uid.uid).orderBy('time', 'desc').limit(15).onSnapshot((snapshot) => {
             const postData = [];
             snapshot.forEach((doc) => {
                 postData.push({ ...doc.data(), id: doc.id })
@@ -95,11 +99,11 @@ function MyOrderList(props) {
                                         <td width="50%">
 
                                             <tr><div style={{ textTransform: 'uppercase' }}><b>{data.status}</b></div></tr>
-                                            <tr><div>{data.Sname}</div></tr>
+                                            <tr><div>#{data.Uotp}</div></tr>
                                         </td>
                                         <td >
                                             Items ({data.Items.length})
-                                    </td>
+                                          </td>
                                         {data.amount ? <td >
                                             ₹ {data.amount}/-
                                     </td> : <td></td>}

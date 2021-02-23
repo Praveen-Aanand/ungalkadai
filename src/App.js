@@ -13,6 +13,8 @@ import ProductsGrid from './components/ProductsGrid';
 import Login from './pages/login';
 import MyOrders from './components/Myorders';
 import Typewriter from 'typewriter-effect';
+import ss1 from './img/1.jpg'
+import ss2 from './img/2.jpg'
 
 // function App() {
 //   return (
@@ -88,6 +90,9 @@ class App extends Component {
     
   }
 
+  tonggleLoginCard=()=>{
+    this.setState({showLogin:true})
+  }
   render() {
     // if (this.state.currentUser == 'load') {
     //   return (
@@ -112,7 +117,8 @@ class App extends Component {
                     options={
                         {
                             loop: true,
-                            devMode: false
+                            devMode: false,
+                            cursor:false
                         }
                     }
                     onInit={(typewriter) => {
@@ -143,20 +149,29 @@ class App extends Component {
         </div>
         <br />
         <div className="MainHeader">
-          <h4 style={{ textAlign: "left", textIndent: '10px', marginTop: '0px', marginBottom: '5px' }}>Popular in your area</h4>
+         <div style={{display:'flex-root',overflowX:'scroll',}}>
+        <table style={{marginLeft:'10px'}}>
+          <tr>
+            <td> <img src={ss1} width="300 "></img></td>
+            <td> <img src={ss2} width="300"></img></td>
+          </tr>
+        </table>
+         </div>
+         <br/>
+          <h4 style={{ textAlign: "left", textIndent: '10px', marginTop: '0px', marginBottom: '5px' }}>Suggestions</h4>
           <ProductsGrid />
           <br/>
-          <Tiles data={data.recipies} title="Cook @ home" height="120" width="120" sub='just one tap to fill list' />
+          <Tiles data={data.recipies} title="Cook @ home (Bundle)" height="120" width="120" sub='just one tap to fill list' />
           <br/>
           <NearBy />
           {/* <SelectStore /> */}
           <br/>
-          <MyOrders uid={this.state.currentUser.uid} />
+          <MyOrders uid={this.state.currentUser.uid} tonggleLogin={()=>this.tonggleLoginCard()} />
             {/* <br/>
             <ContactUs auth={this.state.currentUser}/> */}
         </div>
         <div style={{ position: "absolute", top: '0px', right: '0px', fontSize: '9px', }}>
-          v-0.0.1(beta)
+          v-0.0.3(beta)
           </div>
         <br />
         <br /><br />

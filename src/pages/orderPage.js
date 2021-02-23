@@ -4,8 +4,8 @@ import '../App.css'
 import firebase from "firebase";
 import MultiImageInput from 'react-multiple-image-input';
 import { Link, Redirect } from "react-router-dom";
-import BackArrow from '../img/arrow-left-solid.svg'
 import Login from '../pages/login';
+import { BackArrow } from "../img/close";
 // import { firebaseConfig } from "../components/firebase";
 export default class OrderPage extends Component {
     constructor(props) {
@@ -104,8 +104,10 @@ export default class OrderPage extends Component {
 
             this.removeItem(i)
         } else {
+           if (e<100) {
             temp[i].quant = e;
             this.setState({ list: temp })
+           }
         }
 
     }
@@ -212,7 +214,7 @@ export default class OrderPage extends Component {
 
             return (<div align="left" className="orderPage">
                 <div className="bannerOrder">
-                    <Link to="/" style={{ position: 'absolute', top: '10px', left: '10px', color: 'white', textDecorationColor: "white", textDecoration: 'none', fontSize: "17px" }}><img src={BackArrow}></img></Link>
+                    <Link to="/" style={{ position: 'absolute', top: '10px', left: '10px', color: 'white', textDecorationColor: "white", textDecoration: 'none', fontSize: "17px" }}><BackArrow/></Link>
                     <small>Order Anything from Any Store</small>
                     <p><b>Note:</b>we won't deliver alcohol and any other illegal items. and its prohibited by law</p>
                 </div>
@@ -233,7 +235,7 @@ export default class OrderPage extends Component {
                                                     <input type="button" value="-" onClick={() => this.changeQuant(this.state.list[index].quant - 1, index)}></input>
                                                 </td>
                                                 <td>
-                                                    <div style={{ color: 'rgb(37, 160, 37)', fontWeight: 800 }}>{data.quant}</div>
+                                                    <div style={{ color: 'rgb(37, 160, 37)', fontWeight: 800 ,width:'20px',textAlign:'center'}}>{data.quant}</div>
                                                 </td>
                                                 <td>
                                                     <input type="button" value="+" onClick={() => this.changeQuant(this.state.list[index].quant + 1, index)}></input>

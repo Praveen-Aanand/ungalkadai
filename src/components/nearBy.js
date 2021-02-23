@@ -27,7 +27,7 @@ export default function NearBy() {
 // console.log(JSON.parse(data))
     return(
      <div>
-                <h4 style={{ textAlign: "left", textIndent: '10px', marginTop:'0px',marginBottom: '5px' }}>NearBy</h4>
+                <h4 style={{ textAlign: "left", textIndent: '10px', marginTop:'0px',marginBottom: '5px' }}>NearBy Stores</h4>
           <div className="nearby">
           <table>
               <tr>
