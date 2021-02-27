@@ -3,14 +3,18 @@ import '../App.css'
 import firebase from "firebase";
 import Typewriter from 'typewriter-effect';
 import LoginPic from "../img/loginPIC.jpg"
+import { Redirect, Link } from 'react-router-dom';
+
 export default function MyOrders(props) {
     if (props.uid != undefined) {
         return (
             <div>
                 <div style={{ backgroundColor: 'rgb(138, 239, 138)', color: 'black', padding: '10px' }}>
                     <p>Place a Order Now.</p>
+                    <Link to={`/order`}>
                     <input type="button" value="Order Now" style={{ padding: '20px', paddingTop: '10px', paddingBottom: '10px', backgroundColor: "white", border: '1px solid black' }}
-                        onClick={() => props.tonggleLogin()}  ></input>
+                          ></input>
+                          </Link>
                 </div>
                 <MyOrderList uid={props} />
             </div>
@@ -30,7 +34,7 @@ export default function MyOrders(props) {
                     }
                     onInit={(typewriter) => {
 
-                        typewriter.typeString('<b class="indexM">Login for hassel free shooping <br/> expreince</b>')
+                        typewriter.typeString('<b class="indexM">Login for hassle free shopping <br/> experience</b>')
                             .callFunction(() => {
                                 // console.log('typed');
                             })
@@ -89,7 +93,7 @@ function MyOrderList(props) {
     else {
         return (
             <div>
-                <h4 style={{ textAlign: "left", textIndent: '10px', marginBottom: '10px' }}>My Orders</h4>
+                <h4 id="myorders" style={{ textAlign: "left", textIndent: '10px', marginBottom: '10px' }}>My Orders</h4>
                 {orders.map((data, index) => {
                     return (
                         <div key={index} >

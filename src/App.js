@@ -4,8 +4,10 @@ import homeimg from './img/mobshop.jpg';
 import React, { Component } from 'react';
 import firebase from "firebase";
 import { Redirect, Link } from 'react-router-dom';
-import MyOrder from "./components/Myorders";
 import { withRouter } from 'react-router-dom';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
+import FullWidthTabs from "./components/tabs";
 import ContactUs from "./components/contactUs";
 import NearBy from './components/nearBy';
 import Tiles from './components/Tiles';
@@ -82,7 +84,8 @@ class App extends Component {
         this.setState({ currentUser: user ,showLogin:false})
         //console.log(user)
       } else {
-        this.setState({ currentUser: "notlogin" })
+        this.setState({ currentUser: "notlogin",showLogin:true})
+
         //console.log(user)
       }
     });
@@ -90,8 +93,21 @@ class App extends Component {
     
   }
 
+  signOut=()=>{
+    firebase.auth().signOut().then(() => {
+      // Sign-out successful.
+    }).catch((error) => {
+      // An error happened.
+    });
+  }
   tonggleLoginCard=()=>{
     this.setState({showLogin:true})
+  }
+   a11yProps=(index)=>{
+    return {
+      id: `full-width-tab-${index}`,
+      'aria-controls': `full-width-tabpanel-${index}`,
+    };
   }
   render() {
     // if (this.state.currentUser == 'load') {
@@ -129,6 +145,7 @@ class App extends Component {
                             })
                             .pauseFor(2500)
                             .deleteAll()
+                            .typeString('<h6>Local Market in your pocket</h6>')
                             .callFunction(() => {
                                 // console.log('deleted');
                             })
@@ -142,7 +159,7 @@ class App extends Component {
               <> <Link to='/order'>
                 <input type="button" value="Place Order"></input>
               </Link>
-                <input style={{ color: ' rgb(69, 187, 30)', backgroundColor: 'white', border: '1px solid rgb(69, 187, 30)', background: 'rgba(255, 255, 255, 0.811)' }} type="button" value="My Orders"></input>
+                <a href="#myorders"><input style={{ color: ' rgb(69, 187, 30)', backgroundColor: 'white', border: '1px solid rgb(69, 187, 30)', background: 'rgba(255, 255, 255, 0.811)' }} type="button" value="My Orders"></input></a>
               </>
             }
           </div>
@@ -157,6 +174,12 @@ class App extends Component {
           </tr>
         </table>
          </div>
+
+
+         <FullWidthTabs/>
+
+
+
          <br/>
           <h4 style={{ textAlign: "left", textIndent: '10px', marginTop: '0px', marginBottom: '5px' }}>Suggestions</h4>
           <ProductsGrid />
@@ -167,11 +190,20 @@ class App extends Component {
           {/* <SelectStore /> */}
           <br/>
           <MyOrders uid={this.state.currentUser.uid} tonggleLogin={()=>this.tonggleLoginCard()} />
-            {/* <br/>
-            <ContactUs auth={this.state.currentUser}/> */}
+            <br/>
+          
+           {this.state.currentUser.uid? <div>
+            <ContactUs auth={this.state.currentUser}/>
+            <br/>
+              <b>{this.state.currentUser.phoneNumber}</b>
+              <br/>
+              <input type="button" value='Logout' onClick={()=>{this.signOut()}} style={{ color: 'rgb(250, 68, 65)', backgroundColor: 'white', border: '1px solid rgb(250, 68, 65)', background: 'rgba(255, 255, 255, 0.811)' }} />
+            </div>:null}
+        <br/>
         </div>
+        
         <div style={{ position: "absolute", top: '0px', right: '0px', fontSize: '9px', }}>
-          v-0.0.3(beta)
+          v-0.0.1(beta)
           </div>
         <br />
         <br /><br />
@@ -179,6 +211,7 @@ class App extends Component {
           <div style={{ position: 'fixed', left: '0px', top: '0px',width:'100%',height:'100%', padding: '0px',backgroundColor:'rgba(107, 108, 107, 0.39)' }} onClick={()=>this.setState({showLogin:false})} ></div>
           <Login/>
         </div> : null}
+       
       </div>
     )
   }

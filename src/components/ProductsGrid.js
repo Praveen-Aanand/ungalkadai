@@ -5,30 +5,83 @@ import { Link } from "react-router-dom";
 import Apple from '../img/prods/apple.jpeg'
 import Banana from "../img/prods/banana.jpg"
 import Beans from "../img/prods/beans.jpg"
+import Bdc from "../img/prods/birthday-cake.jpeg"
+import Bgrapes from "../img/prods/blackgrapes.jpg"
+import Brinjal from "../img/prods/brinjal.jpg"
+import cabbage from "../img/prods/cabbage.jpg"
+import carrot from "../img/prods/carrot.jpg"
+import dark_fantasy from "../img/prods/dark-fantasy.jpeg"
+import diary_milk from "../img/prods/diarymilk.jpeg"
+import tomato from "../img/prods/tomato.jpg"
+import potato from "../img/prods/potato.jpg"
+import ladyfinger from "../img/prods/lady-finger.jpg"
+import onions from "../img/prods/onions.jpeg"
+import grapes from "../img/prods/grapes.jpg"
+import guava from "../img/prods/guava.jpg"
+import orange from "../img/prods/orange.jpg"
+import papaya from "../img/prods/papaya.jpg"
+import pomegranate from "../img/prods/pomegranate.jpg"
+
+function TabPanel(props) {
+    const { children, value, index, ...other } = props;
+    return (
+      <div
+        role="tabpanel"
+        hidden={value !== index}
+        id={`full-width-tabpanel-${index}`}
+        aria-labelledby={`full-width-tab-${index}`}
+        {...other}
+      >
+        {value === index && (
+          children
+        )}
+      </div>
+    );
+  }
+  
+  TabPanel.propTypes = {
+    children: PropTypes.node,
+    index: PropTypes.any.isRequired,
+    value: PropTypes.any.isRequired,
+  };
+  
+  function a11yProps(index) {
+    return {
+      id: `full-width-tab-${index}`,
+      'aria-controls': `full-width-tabpanel-${index}`,
+    };
+  }
+  
+  const useStyles = makeStyles((theme) => ({
+    root: {
+      backgroundColor: theme.palette.background.paper,
+      width: 500,
+    },
+  }));
 export default function ProductsGrid() {
     const [activeTabIndex, setActiveTabIndex] = useState(0);
     const [poductData, setProductData] = useState(0);
     // const [cartData, setCartData] = useState([]);
     const data = JSON.parse(JSON.stringify({
         veggies: {
-            tomato: 'https://firebasestorage.googleapis.com/v0/b/ungakadai.appspot.com/o/images%2FhomepageIMG%2Ftomato.jpg?alt=media',
-            brinjal: 'https://firebasestorage.googleapis.com/v0/b/ungakadai.appspot.com/o/images%2FhomepageIMG%2Fbrinjal.jpg?alt=media&token=db5f5847-47ef-4ef9-a0ec-76e74a02337b',
-            beans: 'https://firebasestorage.googleapis.com/v0/b/ungakadai.appspot.com/o/images%2FhomepageIMG%2Fbeans.jpg?alt=media&token=611966d5-1012-4d44-bea0-99e5b016cc36',
-            carrot: 'https://firebasestorage.googleapis.com/v0/b/ungakadai.appspot.com/o/images%2FhomepageIMG%2Fcarrot.jpg?alt=media&token=2f88f927-1607-4cb5-a0c3-12cb75763361',
-            potato: 'https://firebasestorage.googleapis.com/v0/b/ungakadai.appspot.com/o/images%2FhomepageIMG%2Fpotato.jpg?alt=media&token=23852f68-dcb7-43ce-ae53-af8a3f545d46',
-            ladyfinger: 'https://firebasestorage.googleapis.com/v0/b/ungakadai.appspot.com/o/images%2FhomepageIMG%2Flady-finger.jpg?alt=media&token=5bba47ec-55bd-44a5-9b5b-d7fd4f0f7356',
-            onions: 'https://firebasestorage.googleapis.com/v0/b/ungakadai.appspot.com/o/images%2FhomepageIMG%2Fonions.jpeg?alt=media&token=bf939d29-3711-42fa-aa22-232811ab9686',
-            cabbage: "https://firebasestorage.googleapis.com/v0/b/ungakadai.appspot.com/o/images%2FhomepageIMG%2Fcabbage.jpg?alt=media&token=fcd3c2d1-7cce-4f1f-a5dc-d79edb60ea2d"
+            tomato: tomato,
+            brinjal: Brinjal,
+            beans: Beans,
+            carrot: carrot,
+            potato: potato,
+            ladyfinger: ladyfinger,
+            onions: onions,
+            cabbage: cabbage
         },
         fruites: {
             apple: Apple,
-            grapes:'https://firebasestorage.googleapis.com/v0/b/ungakadai.appspot.com/o/images%2FhomepageIMG%2Fgrapes.jpg?alt=media',
+            grapes:grapes,
             banana:Banana,
-            black_grapes:'https://firebasestorage.googleapis.com/v0/b/ungakadai.appspot.com/o/images%2FhomepageIMG%2Fblackgrapes.jpg?alt=media',
-            guava:'https://firebasestorage.googleapis.com/v0/b/ungakadai.appspot.com/o/images%2FhomepageIMG%2Fguava.jpg?alt=media',
-            orange:'https://firebasestorage.googleapis.com/v0/b/ungakadai.appspot.com/o/images%2FhomepageIMG%2Forange.jpg?alt=media',
-            papaya:'https://firebasestorage.googleapis.com/v0/b/ungakadai.appspot.com/o/images%2FhomepageIMG%2Fpapaya.jpg?alt=media',
-            pomegranate:'https://firebasestorage.googleapis.com/v0/b/ungakadai.appspot.com/o/images%2FhomepageIMG%2Fpomegranate.jpg?alt=media'
+            black_grapes:Bgrapes,
+            guava: guava,
+            orange:orange,
+            papaya:papaya,
+            pomegranate:pomegranate
         },
         snacks:{
             lays:'https://firebasestorage.googleapis.com/v0/b/ungakadai.appspot.com/o/images%2FhomepageIMG%2Flays.jpg?alt=media&token=cf6d0490-81c6-41db-a39a-eeb3afb1b3a9',
@@ -36,9 +89,9 @@ export default function ProductsGrid() {
             kadalai_mettai:'https://firebasestorage.googleapis.com/v0/b/ungakadai.appspot.com/o/images%2FhomepageIMG%2Fkadalai-mittai.jpg?alt=media&token=ad958a40-9c5e-4de9-8b13-104986f0e3aa',
             nabati:'https://firebasestorage.googleapis.com/v0/b/ungakadai.appspot.com/o/images%2FhomepageIMG%2Fnabati.jpeg?alt=media&token=63a87daa-a3f8-4e10-b8c8-9e1762d7fbf0',
             oreo:'https://firebasestorage.googleapis.com/v0/b/ungakadai.appspot.com/o/images%2FhomepageIMG%2Foreo.jpg?alt=media&token=93a38d59-fb46-4204-a7bc-88868003d6a7',
-            diary_milk:'https://firebasestorage.googleapis.com/v0/b/ungakadai.appspot.com/o/images%2FhomepageIMG%2Fdiarymilk.jpeg?alt=media&token=de68c722-a2bd-448c-b7c8-f924b3c5dd34',
+            diary_milk:diary_milk,
             fanta:'https://firebasestorage.googleapis.com/v0/b/ungakadai.appspot.com/o/images%2FhomepageIMG%2Ffanta.jpg?alt=media&token=8a214099-6e61-49e9-93f8-9811eee793c4',
-            dark_fantasy:'https://firebasestorage.googleapis.com/v0/b/ungakadai.appspot.com/o/images%2FhomepageIMG%2Fdark-fantasy.jpeg?alt=media&token=4b350b8d-9211-4290-a608-ef6608055ae2'
+            dark_fantasy:dark_fantasy,
         },
         sweets:{
             laddu:'https://firebasestorage.googleapis.com/v0/b/ungakadai.appspot.com/o/images%2FhomepageIMG%2Fladdu.jpg?alt=media&token=67583b8d-c218-44e8-b18e-a291d54ef0ab',
@@ -48,7 +101,7 @@ export default function ProductsGrid() {
             ice_cream:'https://firebasestorage.googleapis.com/v0/b/ungakadai.appspot.com/o/images%2FhomepageIMG%2Fice-cream.jpg?alt=media&token=213a4b0b-9686-4569-aea1-a1a800791241',
             jilebi:'https://firebasestorage.googleapis.com/v0/b/ungakadai.appspot.com/o/images%2FhomepageIMG%2Fjilebi.jpg?alt=media&token=955db938-66f1-4438-b924-487791d2851d',
             gulab_jamun:'https://firebasestorage.googleapis.com/v0/b/ungakadai.appspot.com/o/images%2FhomepageIMG%2Fgulab-jamun.jpg?alt=media&token=e083e6a5-6eb9-4296-8ab3-3a3bda61a49d',
-            birth_day_cake:'https://firebasestorage.googleapis.com/v0/b/ungakadai.appspot.com/o/images%2FhomepageIMG%2Fbirthday-cake.jpeg?alt=media&token=071cba5a-9060-4f35-bc96-d52f055603af'
+            birth_day_cake:Bdc
         }
     }));
 
@@ -69,6 +122,7 @@ export default function ProductsGrid() {
                 proddata.push({ name: key, img: data.veggies[key] })
 
             }
+            console.log(JSON.stringify(proddata))
             setProductData({ data: proddata })
         }
         if (activeTabIndex == 1) {
@@ -206,6 +260,7 @@ class Grid extends Component {
 
                                     <img src={data.img} width="70px" height="70px"></img>
                                     <div align="center" >
+                                        {console.log("h")}
                                         <table>
                                             <tr>
                                                 <td>
