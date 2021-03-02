@@ -176,7 +176,7 @@ class App extends Component {
          </div>
 
 
-         <FullWidthTabs/>
+         {/* <FullWidthTabs/> */}
 
 
 
