@@ -9,7 +9,9 @@ body {
   margin: 0;
   padding: 0%;
   /* background-color: rgb(64, 165, 64); */
-  font-family: openSans,sans-serif;
+  /* font-family: 'openSans',sans-serif !important; */
+  font-family: 'Roboto', 'Helvetica Neue', Helvetica, sans-serif !important;
+  color: #3c4043;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overscroll-behavior-y: contain;
@@ -22,4 +24,9 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+.MuiTab-wrapper{
+  font-size: 10px;
+  padding: 0px;
+  margin: 0px;
 }

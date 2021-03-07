@@ -4,23 +4,37 @@ import './index.css';
 // import Login from './pages/login';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import { BrowserRouter,Switch,Redirect,Route } from "react-router-dom";
-import OrderPage from './pages/orderPage';
+import { BrowserRouter,Switch,Route } from "react-router-dom";
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
+import { createMuiTheme } from '@material-ui/core/styles';
+import { ThemeProvider } from '@material-ui/styles';
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      // Purple and green play nicely together.
+      main: '#000000',
+    },
+    secondary: {
+      // This is green.A700 as hex.
+      main: '#11cb5f',
+    },
+  },
+});
 ReactDOM.render(
   <React.StrictMode>
+    <ThemeProvider theme={theme}>
     <BrowserRouter>
       {/* <IndexRoute component = {App} /> */}
       <Switch>
-      <Route exact path="/" component={App} />
+      <Route exact path="/" component={()=><App index={1}/>} />
         {/* <Route path="/login" component={Login} /> */}
-        <Route exact path="/order/:shop/:address/:cato" component={OrderPage} />
+        {/* <Route exact path="/order/:shop/:address/:cato" component={OrderPage} />
         <Route exact path="/order/:shop/:address/:cato/:list" component={OrderPage} />
-        <Route path="/order" component={OrderPage} />
-
+        <Route path="/order" component={OrderPage} /> */}
         {/* <Redirect path="*" to="/" /> */}
       </Switch>
     </BrowserRouter>
+    </ThemeProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );

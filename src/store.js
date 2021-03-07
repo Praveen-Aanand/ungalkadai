@@ -1,5 +1,5 @@
 import { Store } from "pullstate";
 
-export const Cart = new Store({
-  products: [],
+export const UserData = new Store({
+data:null
 });
