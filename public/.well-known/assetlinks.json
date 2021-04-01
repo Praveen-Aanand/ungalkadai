@@ -1,5 +1,5 @@
 [{
   "relation": ["delegate_permission/common.handle_all_urls"],
   "target" : { "namespace": "android_app", "package_name": "app.web.ungakadai",
-               "sha256_cert_fingerprints": ["30:02:BC:FF:50:56:6B:AE:17:45:48:EE:E2:D1:85:38:E7:33:DB:11:52:08:21:F7:20:B1:79:03:63:27:4F:59"] }
+               "sha256_cert_fingerprints": ["FE:1F:BF:04:A9:C0:2A:86:E2:F6:51:4D:9C:E5:95:35:72:20:EA:42:61:E1:85:AF:D5:FA:1C:B8:AE:6E:98:57"] }
 }]
