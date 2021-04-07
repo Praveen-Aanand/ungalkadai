@@ -11,11 +11,11 @@ import HomeRoundedIcon from '@material-ui/icons/HomeRounded';
 import ExploreRoundedIcon from '@material-ui/icons/ExploreRounded';
 import ShoppingCartRoundedIcon from '@material-ui/icons/ShoppingCartRounded';
 import SettingsRoundedIcon from '@material-ui/icons/SettingsRounded';
-
+import Home from "../pages/Home";
+import Explore from "../pages/explore";
 const useStyles = makeStyles((theme)=>({
   root: {
     flexGrow: 1,
-    maxWidth: 500,
     position:'fixed',
     bottom:'0px',
     width:'100%'
@@ -79,7 +79,7 @@ export default function IconTabs(props) {
         onChangeIndex={handleChangeIndex}
       >
        <TabPanel value={value} index={0} dir={theme.direction}>
-        Item One{console.log("hello1")}
+        <Home/>
       </TabPanel>
       <TabPanel value={value} index={1} dir={theme.direction}>
         Item Two{console.log("hello2")}
