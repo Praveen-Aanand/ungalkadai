@@ -79,13 +79,16 @@ export default function IconTabs(props) {
         onChangeIndex={handleChangeIndex}
       >
        <TabPanel value={value} index={0} dir={theme.direction}>
-        Item One
+        Item One{console.log("hello1")}
       </TabPanel>
       <TabPanel value={value} index={1} dir={theme.direction}>
-        Item Two
+        Item Two{console.log("hello2")}
       </TabPanel>
       <TabPanel value={value} index={2} dir={theme.direction}>
         Item Three
+      </TabPanel>
+      <TabPanel value={value} index={3} dir={theme.direction}>
+        Item four
       </TabPanel>
       </SwipeableViews>
     <Paper  className={classes.root}>
