@@ -8,7 +8,7 @@ import SwipeableViews from 'react-swipeable-views';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import HomeRoundedIcon from '@material-ui/icons/HomeRounded';
-import ExploreRoundedIcon from '@material-ui/icons/ExploreRounded';
+import StorefrontRoundedIcon from '@material-ui/icons/StorefrontRounded';
 import ShoppingCartRoundedIcon from '@material-ui/icons/ShoppingCartRounded';
 import SettingsRoundedIcon from '@material-ui/icons/SettingsRounded';
 import Home from "../pages/Home";
@@ -102,10 +102,9 @@ export default function IconTabs(props) {
         aria-label="icon tabs example"
       >
         <Tab  icon={<HomeRoundedIcon />} aria-label="home" />
-        <Tab  icon={<ExploreRoundedIcon />} aria-label="explore" />
+        <Tab  icon={<StorefrontRoundedIcon />} aria-label="explore" />
         <Tab  icon={<ShoppingCartRoundedIcon />} aria-label="cart" />
         <Tab  icon={<SettingsRoundedIcon />} aria-label="setting" />
-        
       </Tabs>
     </Paper>
     </div>

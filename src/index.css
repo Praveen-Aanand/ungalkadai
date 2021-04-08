@@ -24,6 +24,7 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+    color: #0edf6562;
 }
 .MuiTab-wrapper{
   font-size: 10px;
