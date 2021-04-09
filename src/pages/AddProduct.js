@@ -8,8 +8,23 @@ import firebase from 'firebase'
 import firebaseConfig from "../firebase";
 import { Redirect } from 'react-router-dom'
 import Button from '@material-ui/core/Button'
-
+import AddAPhotoRoundedIcon from '@material-ui/icons/AddAPhotoRounded';
+import CancelRoundedIcon from '@material-ui/icons/CancelRounded';
+import ArrowBackRoundedIcon from '@material-ui/icons/ArrowBackRounded';
+import IconButton from '@material-ui/core/IconButton';
+import { useHistory } from "react-router-dom";
+import '../App.css'
 export default function AddProducts() {
+  Array.prototype.remove = function () {
+    var what, a = arguments, L = a.length, ax;
+    while (L && this.length) {
+      what = a[--L];
+      while ((ax = this.indexOf(what)) !== -1) {
+        this.splice(ax, 1);
+      }
+    }
+    return this;
+  };
   return (
     <div>
       <AppBarThis />
@@ -19,11 +34,17 @@ export default function AddProducts() {
 }
 
 function AppBarThis() {
-
+ 
+  let history = useHistory();
   return (
     <AppBar position="static" style={{ background: 'white' }} elevation={3} >
+
       <Toolbar variant="dense">
-        <Typography variant="subtitle2" style={{ color: 'gray' }} >
+        <IconButton>
+        <ArrowBackRoundedIcon style={{color:'gray'}}  onClick={() => history.goBack()}/>
+        </IconButton>
+        
+        <Typography variant="h6" style={{ color: 'gray' }} >
           Add Products
                 </Typography>
       </Toolbar>
@@ -88,6 +109,7 @@ class FormArea extends React.Component {
       console.log('over')
     })
   }
+
   render() {
     return (
       <React.Fragment>
@@ -99,7 +121,7 @@ class FormArea extends React.Component {
             <form onSubmit={this.form.onformsubmit}>
 
               <TextField
-                style={{ margin: '10px', padding: '0px' }}
+                style={{ margin: '10px', padding: '0px', minWidth: '300px' }}
                 error={this.state.errors.productName ? true : false}
                 id="Name"
                 label="Product Name"
@@ -112,18 +134,29 @@ class FormArea extends React.Component {
                 helperText={this.state.errors.productName ? this.state.errors.productName : ""}
               />
 
-              <div width="100%">
-                <table>
+              <div width="100%" style={{ overflowX: 'scroll' }}>
+                {this.state.images.length ? <table>
                   <tr id="imgList">
-                    {this.state.images.map((data,index) => {
+                    {this.state.images.map((data, index) => {
                       return (
                         <td key={index}>
-                          <img src={data} width="100px"/>
+                          <div className="imageContainerEditor">
+                            <CancelRoundedIcon className="close" onClick={() => {
+                              var temp = this.state.images;
+                              temp.remove(data);
+                              this.setState({images:temp})
+                            }} /><br />
+                            <img src={data} style={{ maxWidth: '100px', maxHeight: '100px' }} />
+                          </div>
                         </td>
                       )
                     })}
                   </tr>
-                </table>
+                </table> : <div >
+                  <AddAPhotoRoundedIcon style={{ fontSize: 40, padding: "30px", backgroundColor: 'rgb(222, 222, 222)' }} onClick={()=>{
+                    document.getElementById('imgup').click();
+                  }}/>
+                </div>}
               </div>
               <div>
                 <input
@@ -132,24 +165,30 @@ class FormArea extends React.Component {
                   id="contained-button-file"
                   multiple
                   type="file"
-                  onInput={(e) => {
-                    var fReader = new FileReader();
-                    fReader.readAsDataURL( e.target.files[0]);
-                   
-                    fReader.onload = ()=>{
-                      this.setState({ images: [fReader.result] })
-                  }
+                  onInput={async (e) => {
+
+                    for (let index = 0; index < e.target.files.length; index++) {
+                      var fReader = new FileReader();
+                      await fReader.readAsDataURL(e.target.files[index]);
+
+                      fReader.onload = async (ele) => {
+                        // console.log(fReader.result, index, e.target.files[index])
+                        await this.setState({ images: [...this.state.images, ele.target.result] })
+                      }
+                    }
+
+
+
                   }}
                 />
                 <label htmlFor="contained-button-file">
-                  <Button variant="contained" color="primary" component="span">
-                    Upload
-        </Button>
+                  <Button variant="contained" id="imgup" color="gray" component="span">
+                    select images
+                  </Button>
                 </label>
               </div>
-              <button >Add image</button> <br />
               <TextField
-                style={{ margin: '10px', padding: '0px' }}
+                style={{ margin: '10px', padding: '0px', minWidth: '300px' }}
                 error={this.state.errors.MRP ? true : false}
                 type="number"
                 id="mrp"
@@ -169,7 +208,7 @@ class FormArea extends React.Component {
               // }}
               />
               <TextField
-                style={{ margin: '10px', padding: '0px' }}
+                style={{ margin: '10px', padding: '0px', minWidth: '300px' }}
                 error={this.state.errors.price ? true : false}
                 type="number"
                 id="price"
@@ -180,9 +219,9 @@ class FormArea extends React.Component {
                 onBlur={this.form.handleBlurEvent}
                 onChange={this.form.handleChangeEvent}
                 helperText={this.state.errors.price ? this.state.errors.price : ""}
-              />
+              /><br />
               <TextField
-                style={{ margin: '10px', padding: '0px' }}
+                style={{ margin: '10px', padding: '0px', minWidth: '300px' }}
                 multiline
                 error={this.state.errors.description ? true : false}
                 id="dis"
@@ -200,12 +239,12 @@ class FormArea extends React.Component {
                 Submit
           </Button>
               <br /><br />
-              <Typography variant="subtitle2" color="initial" style={{ maxWidth: "200px", color: 'gray' }}>
-                Make sure your phone number is avalable to take calls.
-          </Typography>
-            </form></div>}
-          <div></div>
 
+            </form></div>}
+
+          <Typography variant="subtitle2" color="initial" style={{ maxWidth: "200px", color: 'gray' }}>
+            images must be in square (1:1)
+            </Typography>
         </div>
       </React.Fragment>
     )

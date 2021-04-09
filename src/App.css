@@ -1,0 +1,14 @@
+.color{
+    color: rgb(222, 222, 222);
+}
+.imageContainerEditor{
+    position: relative;
+    border: 1px solid gray;
+    border-radius: 10px;
+}
+.imageContainerEditor .close{
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    color: rgb(180, 8, 8);
+}
