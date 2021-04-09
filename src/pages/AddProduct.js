@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
@@ -9,51 +9,53 @@ import firebaseConfig from "../firebase";
 import { Redirect } from 'react-router-dom'
 import Button from '@material-ui/core/Button'
 
-export default function AddProducts(params) {
-    return(
-        <div>
-            <AppBarThis/>
-            <FormArea/>
-        </div>
-    )
+export default function AddProducts() {
+  return (
+    <div>
+      <AppBarThis />
+      <FormArea />
+    </div>
+  )
 }
 
 function AppBarThis() {
 
-    return (
-        <AppBar position="static" style={{background:'white'}}  elevation={3} >
-            <Toolbar variant="dense">
-                <Typography variant="subtitle2" style={{color:'gray'}} >
-                    Add Products
+  return (
+    <AppBar position="static" style={{ background: 'white' }} elevation={3} >
+      <Toolbar variant="dense">
+        <Typography variant="subtitle2" style={{ color: 'gray' }} >
+          Add Products
                 </Typography>
-            </Toolbar>
-        </AppBar>
-    )
+      </Toolbar>
+    </AppBar>
+  )
 }
 
- class FormArea extends React.Component {
+class FormArea extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       fields: {
         productName: "",
-        mrp:'',
-        price:'',
-        images:[],
-        dis:''
+        MRP: '',
+        price: '',
+        images: [],
+        description: ''
       },
+      images: [],
       loading: false,
       phone: '',
       errors: {}
     };
     this.form = new ReactFormInputValidation(this);
     this.form.useRules({
-        productName: "required",
-      ownername: 'required',
-      pincode: "required|numeric|digits:6",
+      productName: "required|between:8,25",
+      MRP: 'required|numeric|between:1,100000',
+      price: "required|numeric|between:1,100000",
+      description: 'required'
+
     });
     this.form.onformsubmit = (fields) => {
-      // Do you ajax calls here.
       console.log(fields)
     }
   }
@@ -67,11 +69,8 @@ function AppBarThis() {
     }
     firebase.default.auth().onAuthStateChanged((user) => {
       if (user) {
-        
-
       } else {
         console.log('hello')
-
         return <Redirect to={`/login`} />
       }
     });
@@ -91,82 +90,126 @@ function AppBarThis() {
   }
   render() {
     return (
-    <React.Fragment>
-      <div align="center" style={{paddingTop:'20px'}}>
-        {this.state.loading ? <div style={{ width: '100vw', height: '100vh' }}>
-        <h2>Registered</h2>
+      <React.Fragment>
+        <div align="center" style={{ paddingTop: '20px' }}>
+          {this.state.loading ? <div style={{ width: '100vw', height: '100vh' }}>
+            <h2>Registered</h2>
           Our Team will contact you soon.
         </div> : <div>
-          <form onSubmit={this.form.onformsubmit}>
+            <form onSubmit={this.form.onformsubmit}>
 
-            <TextField
-              style={{ margin: '10px', padding: '0px' }}
-              error={this.state.errors.productName ? true : false}
-              id="Name"
-              label="Shop Name"
-              name="name"
-              variant="outlined"
-              value={this.state.fields.productName}
-              onBlur={this.form.handleBlurEvent}
-              onChange={this.form.handleChangeEvent}
-              helperText={this.state.errors.productName ? this.state.errors.productName : ""}
-            />
-            <table>
-                <tr>
-                    <td></td>
-                </tr>
+              <TextField
+                style={{ margin: '10px', padding: '0px' }}
+                error={this.state.errors.productName ? true : false}
+                id="Name"
+                label="Product Name"
+                name="productName"
+                variant="outlined"
+                data-attribute-name="Product Name"
+                value={this.state.fields.productName}
+                onBlur={this.form.handleBlurEvent}
+                onChange={this.form.handleChangeEvent}
+                helperText={this.state.errors.productName ? this.state.errors.productName : ""}
+              />
 
-            </table>
-            <TextField
-              style={{ margin: '10px', padding: '0px' }}
-
-              error={this.state.errors.ownername ? true : false}
-              id="oName"
-              label="Owner Name"
-              name="ownername"
-              variant="outlined"
-              value={this.state.fields.ownername}
-              onBlur={this.form.handleBlurEvent}
-              onChange={this.form.handleChangeEvent}
-              helperText={this.state.errors.ownername ? this.state.errors.ownername : ""}
-            />
-            <TextField
-              style={{ margin: '10px', padding: '0px' }}
-
-              error={this.state.errors.pincode ? true : false}
-              id="pincode"
-              label="pincode"
-              name="pincode"
-              variant="outlined"
-              onBlur={this.form.handleBlurEvent}
-              onChange={this.form.handleChangeEvent}
-              value={this.state.fields.pincode}
-              helperText={this.state.errors.pincode ? this.state.errors.pincode : ""}
-            />
-            <TextField
-              style={{ margin: '10px', padding: '0px' }}
-
-              disabled={true}
-              id="phone"
-              label="PhoneNumber"
-              name="phone"
-              variant="outlined"
-              value={this.state.phone}
-            />
-            <br />
-            <br />
-            <Button variant="contained" color="secondary" onClick={()=>this.RegisterUpload()}>
-              Submit
+              <div width="100%">
+                <table>
+                  <tr id="imgList">
+                    {this.state.images.map((data,index) => {
+                      return (
+                        <td key={index}>
+                          <img src={data} width="100px"/>
+                        </td>
+                      )
+                    })}
+                  </tr>
+                </table>
+              </div>
+              <div>
+                <input
+                  accept="image/*"
+                  style={{ display: 'none' }}
+                  id="contained-button-file"
+                  multiple
+                  type="file"
+                  onInput={(e) => {
+                    var fReader = new FileReader();
+                    fReader.readAsDataURL( e.target.files[0]);
+                   
+                    fReader.onload = ()=>{
+                      this.setState({ images: [fReader.result] })
+                  }
+                  }}
+                />
+                <label htmlFor="contained-button-file">
+                  <Button variant="contained" color="primary" component="span">
+                    Upload
+        </Button>
+                </label>
+              </div>
+              <button >Add image</button> <br />
+              <TextField
+                style={{ margin: '10px', padding: '0px' }}
+                error={this.state.errors.MRP ? true : false}
+                type="number"
+                id="mrp"
+                label="MRP"
+                name="MRP"
+                variant="outlined"
+                value={this.state.fields.MRP}
+                onBlur={this.form.handleBlurEvent}
+                onChange={this.form.handleChangeEvent}
+                helperText={this.state.errors.MRP ? this.state.errors.MRP : ""}
+              // InputProps={{
+              //   startAdornment: (
+              //     <InputAdornment position="start">
+              //       <AccountCircle />
+              //     </InputAdornment>
+              //   ),
+              // }}
+              />
+              <TextField
+                style={{ margin: '10px', padding: '0px' }}
+                error={this.state.errors.price ? true : false}
+                type="number"
+                id="price"
+                label="Selling price"
+                name="price"
+                variant="outlined"
+                value={this.state.fields.price}
+                onBlur={this.form.handleBlurEvent}
+                onChange={this.form.handleChangeEvent}
+                helperText={this.state.errors.price ? this.state.errors.price : ""}
+              />
+              <TextField
+                style={{ margin: '10px', padding: '0px' }}
+                multiline
+                error={this.state.errors.description ? true : false}
+                id="dis"
+                label="Description"
+                name="description"
+                variant="outlined"
+                onBlur={this.form.handleBlurEvent}
+                onChange={this.form.handleChangeEvent}
+                value={this.state.fields.description}
+                helperText={this.state.errors.description ? this.state.errors.description : ""}
+              />
+              <br />
+              <br />
+              <Button variant="contained" color="secondary" onClick={() => this.RegisterUpload()}>
+                Submit
           </Button>
-            <br /><br />
-            <Typography variant="subtitle2" color="initial" style={{ maxWidth: "200px", color: 'gray' }}>
-              Make sure your phone number is avalable to take calls.
+              <br /><br />
+              <Typography variant="subtitle2" color="initial" style={{ maxWidth: "200px", color: 'gray' }}>
+                Make sure your phone number is avalable to take calls.
           </Typography>
-          </form></div>}
-        <div></div>
+            </form></div>}
+          <div></div>
 
-      </div>
-    </React.Fragment>
+        </div>
+      </React.Fragment>
     )
   }
 }
+
+
