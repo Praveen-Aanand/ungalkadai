@@ -12,7 +12,7 @@ import StorefrontRoundedIcon from '@material-ui/icons/StorefrontRounded';
 import ShoppingCartRoundedIcon from '@material-ui/icons/ShoppingCartRounded';
 import SettingsRoundedIcon from '@material-ui/icons/SettingsRounded';
 import Home from "../pages/Home";
-import Explore from "../pages/explore";
+import ProductList from "../pages/productList";
 const useStyles = makeStyles((theme)=>({
   root: {
     flexGrow: 1,
@@ -82,7 +82,7 @@ export default function IconTabs(props) {
         <Home/>
       </TabPanel>
       <TabPanel value={value} index={1} dir={theme.direction}>
-        Item Two{console.log("hello2")}
+        <ProductList/>
       </TabPanel>
       <TabPanel value={value} index={2} dir={theme.direction}>
         Item Three

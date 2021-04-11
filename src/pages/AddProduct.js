@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import ReactFormInputValidation from "react-form-input-validation";
 import TextField from '@material-ui/core/TextField'
 import firebase from 'firebase'
+import { UserData } from '../store'
 import firebaseConfig from "../firebase";
 import { Redirect } from 'react-router-dom'
 import Button from '@material-ui/core/Button'
@@ -13,8 +14,11 @@ import CancelRoundedIcon from '@material-ui/icons/CancelRounded';
 import ArrowBackRoundedIcon from '@material-ui/icons/ArrowBackRounded';
 import IconButton from '@material-ui/core/IconButton';
 import { useHistory } from "react-router-dom";
+import ImgRes from '../lib/imageResize'
+import BtoB from '../lib/b64tob'
 import '../App.css'
 export default function AddProducts() {
+  const userData = UserData.useState(s => s);
   Array.prototype.remove = function () {
     var what, a = arguments, L = a.length, ax;
     while (L && this.length) {
@@ -28,22 +32,22 @@ export default function AddProducts() {
   return (
     <div>
       <AppBarThis />
-      <FormArea />
+      <FormArea userData={userData} />
     </div>
   )
 }
 
 function AppBarThis() {
- 
+
   let history = useHistory();
   return (
     <AppBar position="static" style={{ background: 'white' }} elevation={3} >
 
       <Toolbar variant="dense">
         <IconButton>
-        <ArrowBackRoundedIcon style={{color:'gray'}}  onClick={() => history.goBack()}/>
+          <ArrowBackRoundedIcon style={{ color: 'gray' }} onClick={() => history.goBack()} />
         </IconButton>
-        
+
         <Typography variant="h6" style={{ color: 'gray' }} >
           Add Products
                 </Typography>
@@ -65,15 +69,14 @@ class FormArea extends React.Component {
       },
       images: [],
       loading: false,
-      phone: '',
       errors: {}
     };
     this.form = new ReactFormInputValidation(this);
     this.form.useRules({
-      productName: "required|between:8,25",
+      productName: "required|between:3,35",
       MRP: 'required|numeric|between:1,100000',
       price: "required|numeric|between:1,100000",
-      description: 'required'
+      description: ''
 
     });
     this.form.onformsubmit = (fields) => {
@@ -96,18 +99,60 @@ class FormArea extends React.Component {
       }
     });
   }
-  RegisterUpload() {
-    firebase.firestore().collection('Support').doc(this.state.phone).set({
-      type: 'Register',
-      ShopName: this.state.fields.name,
-      Owner: this.state.fields.ownername,
-      pincode: this.state.fields.pincode,
-      phone: this.state.phone
+
+  async Upload() {
+    this.setState({loading:true})
+    var thumb=ImgRes(this.state.images[0], 100, 100);
+    var storageRef = firebase.storage().ref();
+    function createUUID() {
+      return 'xxxx-xxxx-xxx'.replace(/[xy]/g, function (c) {
+        var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+        return v.toString(16);
+      });
+    }
+    var Metadata = {
+      cacheControl: 'public,max-age=36000',
+      contentType: 'image/jpeg',
+    }
+    var pid = createUUID();
+    var imgList=[];
+    for (let i = 0; i < this.state.images.length; i++) {
+    
+        var ref =await storageRef.child('images/products/' + pid + '/' + createUUID() + '.jpg');
+        var fdata = await BtoB(ImgRes(this.state.images[i], 500, 500, 'image/jpeg'));
+        console.log(fdata)
+       await ref.put(fdata, Metadata).then(async(snapshot) => {
+          console.log('Uploaded a blob or file!', snapshot);
+        await snapshot.ref.getDownloadURL().then(url => {
+            console.log(url)
+            imgList.push(url)
+          })
+        }).catch(e => console.log(e))
+     
+    }
+
+    console.log(imgList)
+   if (imgList.length==this.state.images.length) {
+    await firebase.firestore().collection('products').doc(pid).set({
+      v:'1',
+      type: 'simple',
+      ShopName: this.props.userData.data.shopName,
+      name:this.state.fields.productName,
+      mrp:this.state.fields.MRP,
+      price:this.state.fields.price,
+      dis:this.state.fields.description,
+      sid:this.props.userData.data.sid,
+      images:imgList,
+      thumb:thumb,
+      pid:pid
     }).then(() => {
       this.setState({ already: true })
-    }).catch(() => {
-      console.log('over')
+      this.setState({loading:false})
+      console.log('finished')
+    }).catch((e) => {
+      console.log(e)
     })
+   }
   }
 
   render() {
@@ -119,7 +164,6 @@ class FormArea extends React.Component {
           Our Team will contact you soon.
         </div> : <div>
             <form onSubmit={this.form.onformsubmit}>
-
               <TextField
                 style={{ margin: '10px', padding: '0px', minWidth: '300px' }}
                 error={this.state.errors.productName ? true : false}
@@ -144,7 +188,7 @@ class FormArea extends React.Component {
                             <CancelRoundedIcon className="close" onClick={() => {
                               var temp = this.state.images;
                               temp.remove(data);
-                              this.setState({images:temp})
+                              this.setState({ images: temp })
                             }} /><br />
                             <img src={data} style={{ maxWidth: '100px', maxHeight: '100px' }} />
                           </div>
@@ -153,9 +197,9 @@ class FormArea extends React.Component {
                     })}
                   </tr>
                 </table> : <div >
-                  <AddAPhotoRoundedIcon style={{ fontSize: 40, padding: "30px", backgroundColor: 'rgb(222, 222, 222)' }} onClick={()=>{
+                  <AddAPhotoRoundedIcon style={{ fontSize: 40, padding: "30px", backgroundColor: 'rgb(222, 222, 222)' }} onClick={() => {
                     document.getElementById('imgup').click();
-                  }}/>
+                  }} />
                 </div>}
               </div>
               <div>
@@ -176,9 +220,6 @@ class FormArea extends React.Component {
                         await this.setState({ images: [...this.state.images, ele.target.result] })
                       }
                     }
-
-
-
                   }}
                 />
                 <label htmlFor="contained-button-file">
@@ -225,7 +266,7 @@ class FormArea extends React.Component {
                 multiline
                 error={this.state.errors.description ? true : false}
                 id="dis"
-                label="Description"
+                label="Description (optional)"
                 name="description"
                 variant="outlined"
                 onBlur={this.form.handleBlurEvent}
@@ -235,7 +276,7 @@ class FormArea extends React.Component {
               />
               <br />
               <br />
-              <Button variant="contained" color="secondary" onClick={() => this.RegisterUpload()}>
+              <Button variant="contained" color="secondary" onClick={() => this.Upload()}>
                 Submit
           </Button>
               <br /><br />
